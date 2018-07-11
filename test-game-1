@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chơi ca-rô</title>
+    <style>
+        body {
+            margin : 30px;
+            background: linear-gradient(lightblue,dodgerblue);
+        }
+        .p1 {
+            font-weight: bold;
+            color: midnightblue;
+            font-size: 30px;
+        }
+        .p2 {
+            font-weight: bold;
+            color : red;
+        }
+        .p3 {
+            font-style: italic;
+            color : dimgrey;
+        }
+        .tb-before {
+            border : 1px solid gray;
+            border-collapse: collapse;
+            background-color: #d1d1d1;
+        }
+        .tb-after {
+            border : 1px solid gray;
+            border-collapse: collapse;
+            background-color: #ef8762;
+        }
+        td {
+            width: 20px;
+        }
+        .spacestyle {
+            color: dimgrey;
+            font-weight: bold;
+            text-align: center;
+        }
+        button {
+            padding: 10px;
+            font-weight: bold;
+            color: firebrick;
+            border-radius: 5px;
+            font-size: 20px;
+            background-color: burlywood;
+        }
+    </style>
+</head>
+<body>
+<p class="p1">Lượt đi của <span class="p2" id="turn">O</span></p>
+<p class="p3">Số ô đã dùng : <span class="p2" id="turn-cnt">0</span></p>
+<script>
+    var gamevar = new Array(20);
+    document.write('<table border=1 class="tb-before" id="tbid">');
+    for ( var i=0; i<20; i++)
+    {
+        gamevar[i] = new Array('&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;','&nbsp;');
+        document.write('<tr>');
+        for (var j=0; j<20; j++)
+        {
+            document.write('<td id="ar' + i + 'v' + j + '" class="spacestyle" onclick="test(this.id)">' + gamevar[i][j] + '</td>');
+        }
+        document.write('</tr>');
+    }
+    document.write('</table>');
+
+    function test(clickedID) {
+        var checkcount = parseInt(document.getElementById("turn-cnt").innerHTML);
+        var blkctn = document.getElementById(clickedID).innerHTML;
+        var blkid = document.getElementById(clickedID).id;
+        var acnt = bcnt = ccnt = dcnt = ecnt = fcnt = gcnt = hcnt = 0;
+        // alert(blkid);
+        for ( var k=0; k<5; k++)
+        if (blkid[k]  == 'v')
+        {
+            var row = parseInt(blkid.slice(2,k));
+            var col = parseInt(blkid.slice(k+1,7));
+        }
+        // alert("i = " +row + " j = "+col);
+        if (checkcount == 400)
+            alert("Kết quả : hòa");
+        else if (blkctn == '&nbsp;' && checkcount%2==0)
+        {
+            document.getElementById(blkid).innerHTML = "O";
+            gamevar[row][col]= "O";
+            document.getElementById("turn").innerHTML = "X";
+            document.getElementById("turn-cnt").innerHTML = checkcount + 1;
+            for (var a1=row; gamevar[a1][col] == "O" ; a1--)
+                acnt++;
+            for (var a2=row; gamevar[a2][col] == "O" ; a2++)
+                acnt++;
+            if (acnt==6){
+                alert("Bên O thắng!");
+                document.getElementById("tbid").className = "tb-after";
+            }
+            //loop 1
+            for (var b1=col; gamevar[row][b1] == "O" ; b1--)
+                bcnt++;
+            for (var b2=col; gamevar[row][b2] == "O" ; b2++)
+                bcnt++;
+            if (bcnt==6){
+                alert("Bên O thắng!");
+                document.getElementById("tbid").className = "tb-after";
+            }
+            //loop 2
+            for (var c1=row, d1=col; gamevar[c1][d1] == "O"; c1++, d1++)
+                ccnt++;
+            for (var c2=row, d2=col; gamevar[c2][d2] == "O"; c2--, d2--)
+                ccnt++;
+            if (ccnt == 6){
+                alert("Bên O thắng!");
+                document.getElementById("tbid").className = "tb-after";
+            }
+            //loop 3
+            for (var c3=row, d3=col; gamevar[c3][d3] == "O"; c3++, d3--)
+                dcnt++;
+            for (var c4=row, d4=col; gamevar[c4][d4] == "O"; c4--, d4++)
+                dcnt++;
+            if (dcnt == 6){
+                alert("Bên O thắng!");
+                document.getElementById("tbid").className = "tb-after";
+            }
+            //loop 4
+        }
+        else if (blkctn == '&nbsp;' && checkcount%2==1)
+        {
+            document.getElementById(blkid).innerHTML = "X";
+            gamevar[row][col]= "X";
+            document.getElementById("turn").innerHTML = "O";
+            document.getElementById("turn-cnt").innerHTML = checkcount + 1;
+            for (var e1=row; gamevar[e1][col] == "X" ; e1--)
+                ecnt++;
+            for (var e2=row; gamevar[e2][col] == "X" ; e2++)
+                ecnt++;
+            if (ecnt==6){
+                alert("Bên X thắng!");
+                document.getElementById("tbid").className = "tb-after";
+            }
+            //loop 1
+            for (var f1=col; gamevar[row][f1] == "X" ; f1--)
+                fcnt++;
+            for (var f2=col; gamevar[row][f2] == "X" ; f2++)
+                fcnt++;
+            if (fcnt==6){
+                alert("Bên X thắng!");
+                document.getElementById("tbid").className = "tb-after";
+            }
+            //loop 2
+            for (var g1=row, h1=col; gamevar[g1][h1] == "X"; g1++, h1++)
+                gcnt++;
+            for (var g2=row, h2=col; gamevar[g2][h2] == "X"; g2--, h2--)
+                gcnt++;
+            if (gcnt == 6){
+                alert("Bên X thắng!");
+                document.getElementById("tbid").className = "tb-after";
+            }
+            //loop 3
+            for (var g3=row, h3=col; gamevar[g3][h3] == "X"; g3++, h3--)
+                hcnt++;
+            for (var g4=row, h4=col; gamevar[g4][h4] == "X"; g4--, h4++)
+                hcnt++;
+            if (hcnt == 6){
+                alert("Bên X thắng!");
+                document.getElementById("tbid").className = "tb-after";
+            }
+            //loop 4
+        }
+    }
+    function resetall() {
+        document.getElementById("turn").innerHTML = "O";
+        document.getElementById("turn-cnt").innerHTML = 0;
+        for (var ir = 0; ir<20; ir++)
+            for (var jr =0; jr<20; jr++)
+            {
+                gamevar[ir][jr] = "&nbsp;";
+                var lastid = 'ar' + ir + 'v' + jr;
+                document.getElementById(lastid).innerHTML = "&nbsp;";
+            }
+
+    }
+</script>
+<br>
+<button type="button" onclick="resetall()">Reset</button>
+</body>
+</html>
